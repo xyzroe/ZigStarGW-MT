@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/ui">
+        <file>images/coffee.png</file>
+        <file>images/xyzroe.png</file>
+        <file>images/zigstar.png</file>
+        <file>images/zigstar_sq.ico</file>
+        <file>images/zigstar_tr_gl.ico</file>
+    </qresource>
+</RCC>

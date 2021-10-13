@@ -1,0 +1,13 @@
+.DS_Store
+commit
+*.hex
+*.json
+etc
+*__pycache__/
+bin
+build
+dist
+*.spec
+setup.py
+.eggs
+Thumbs.db
