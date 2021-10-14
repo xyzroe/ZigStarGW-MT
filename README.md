@@ -7,8 +7,11 @@ You can get started without installing Python and the required modules, and with
 - Write / Verify / Erase firmware of Zigbee module
 - Backdoor Serial Loader turns on automatically
 - Manual restart of  Zigbee module or ESP32 is available
-
-Currently, OS X users still need a terminal
+  
+  
+  
+Currently, OS X users still need a terminal.  
+  
 To install:
 ```bash
 git clone https://github.com/xyzroe/ZigStarGW-MT.git; cd ZigStarGW-MT; git submodule init; git submodule update; pip install PyQt5 pyserial zigpy_znp IntelHex; python ZigStarGW-MT.py 
