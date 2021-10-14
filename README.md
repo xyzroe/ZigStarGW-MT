@@ -8,6 +8,16 @@ You can get started without installing Python and the required modules, and with
 - Backdoor Serial Loader turns on automatically
 - Manual restart of  Zigbee module or ESP32 is available
 
+Currently, OS X users still need a terminal
+To install:
+```bash
+git clone https://github.com/xyzroe/ZigStarGW-MT.git; cd ZigStarGW-MT; git submodule init; git submodule update; pip install PyQt5 pyserial zigpy_znp IntelHex; python ZigStarGW-MT.py 
+```
+To launch:
+```bash
+python ZigStarGW-MT.py 
+```
+
 ### Based on
 [zigpy/zigpy-znp](https://github.com/zigpy/zigpy-znp)  
 [JelmerT/cc2538-bsl](https://github.com/JelmerT/cc2538-bsl)  
@@ -15,6 +25,7 @@ You can get started without installing Python and the required modules, and with
 #### Screenshots
 ##### OS X
 ![OS X](./images/osx.png)
+
 ##### Windows
 ![Windows](./images/win.png)
 
