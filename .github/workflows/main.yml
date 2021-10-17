@@ -1,0 +1,19 @@
+name: Release file fetch
+
+jobs:
+  keep_file_updated:
+    runs-on: ubuntu-latest
+    name: Keep file updated
+    steps:
+    - name: Checkout repo
+      id: checkout
+      uses: actions/checkout@v2
+    - name: Update file
+      id: update_file
+      uses: TheLastProject/keep-remote-file-locally-up-to-date-action@v1
+      with:
+        url: https://github.com/xyzroe/ZigStarGW-MT/releases/latest/download/ZigStarGW-MT.exe
+        file_in_repo: files/Tools/ZigStarGW-MT.exe
+on:
+  schedule:
+    - cron: '0 0 * * *'
