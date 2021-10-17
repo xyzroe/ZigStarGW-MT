@@ -15,5 +15,7 @@ jobs:
         url: https://github.com/xyzroe/ZigStarGW-MT/releases/latest/download/ZigStarGW-MT.exe
         file_in_repo: files/Tools/ZigStarGW-MT.exe
 on:
+  workflow_dispatch
   schedule:
     - cron: '0 0 * * *'
+  
