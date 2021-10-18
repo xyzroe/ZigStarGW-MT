@@ -12,7 +12,7 @@ echo 'about.py OK'
 pyrcc5 ./ui/resources.qrc -o ./resources_rc.py 
 echo 'resources.qrc OK' 
 
-create-version-file ./ui/metadata.yml --outfile ./ui/file_version_info.txt --version $ver 
+create-version-file ./ui/metadata.yml --outfile ./ui/file_version_info.txt --version $ver
 echo 'file_version_info.txt OK'
 
 sed "s/[0-9].[0-9].[0-9]/$ver/" osx.spec > osx.spec1
