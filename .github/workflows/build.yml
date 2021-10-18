@@ -38,17 +38,14 @@ jobs:
         include:
           - os: macos-latest
             TARGET: macos
-            CMD_BUILD: >
-                pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.icns ZigStarGW-MT.py &&
-                cd dist/ &&
-                zip -r9 ZigStarGW-MT ZigStarGW-MT.app/
-            OUT_FILE_NAME: ZigStarGW-MT.zip
-            ASSET_MIME: application/zip
+            CMD_BUILD: pyinstaller osx.spec
+            OUT_FILE_NAME: ZigStarGW-MT.app
+            ASSET_MIME: application/applefile
           - os: windows-latest
             TARGET: windows
-            CMD_BUILD: pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico ZigStarGW-MT.py
+            CMD_BUILD: pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py
             OUT_FILE_NAME: ZigStarGW-MT.exe
-            ASSET_MIME: application/vnd.microsoft.portable-executable
+            ASSET_MIME: application/x-executable
     steps:
     - uses: actions/checkout@v1
       with:

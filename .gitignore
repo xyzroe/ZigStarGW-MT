@@ -7,7 +7,6 @@ etc
 bin
 build
 dist
-*.spec
 setup.py
 .eggs
 Thumbs.db
