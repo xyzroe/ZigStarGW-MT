@@ -47,9 +47,12 @@ jobs:
             ASSET_MIME: application/zip
           - os: windows-latest
             TARGET: windows
-            CMD_BUILD: pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py
-            OUT_FILE_NAME: ZigStarGW-MT.exe
-            ASSET_MIME: application/x-executable
+            CMD_BUILD: > 
+                pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
+                cd dist/ &&
+                powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT.exe.zip 
+            OUT_FILE_NAME: ZigStarGW-MT.exe.zip 
+            ASSET_MIME: application/zip
     steps:
     - uses: actions/checkout@v1
       with:
