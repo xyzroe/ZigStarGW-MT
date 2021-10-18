@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap
 
 from ui import about, version
 
-import asyncio, webbrowser, json
+import asyncio, webbrowser, json, re
 
 import cc2538_bsl
 
@@ -62,6 +62,31 @@ class About(QtWidgets.QDialog, about.Ui_Dialog):
 
 
 
+def checkDevicePort(port):
+    domain = re.compile(r'^([^.:/@#]+)(\.[^.:/@#]+)+:(\d+)$')
+
+    #ipv4 = re.compile(r'\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b')
+
+    #ipv6 = re.compile(r'(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))') 
+    
+    uart_win = re.compile(r'^COM(\d+)$')
+
+    uart_unix = re.compile(r'^/(\w+)/(\S+)$')
+
+    mode = ""
+
+    if domain.match(port):
+        mode = "ip"
+    elif uart_win.match(port) or uart_unix.match(port):
+        mode = "uart"
+    else:
+        port = ""
+
+
+    return mode, port
+
+def getIP(string):
+        return string.split(':')[-2]
 
 
 
@@ -108,7 +133,7 @@ class cc2538_bsl_run(QtCore.QThread):
         asyncio.run(workCC(self))
         
 async def workCC(self):
-        print(self.parent.conf)
+        #print(self.parent.conf)
         defs = {
             'baud': 500000,
             'force_speed': 0,

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
 
-from PyQt5 import QtWidgets, QtCore, QtNetwork
+from PyQt5 import QtWidgets, QtCore, QtNetwork, QtGui
 from PyQt5.QtGui import QPixmap
 
 
@@ -14,9 +14,25 @@ from ui import main, etc
 
 #import resources_rc
 
+import glob
+
+from zeroconf import ServiceBrowser, Zeroconf
+import socket
+
+class ComboBox(QtWidgets.QComboBox):
+    def addItem(self, item):
+        if item not in self.get_set_items():
+            super(ComboBox, self).addItem(item)
+
+    def addItems(self, items):
+        items = list(self.get_set_items() | set(items))
+        super(ComboBox, self).addItems(items)
+
+    def get_set_items(self):
+        return set([self.itemText(i) for i in range(self.count())])
 
 
-#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 
 #logger cc2538
@@ -70,12 +86,28 @@ class znpLogger(logging.Handler):
 
 
 
+class MyListener():
+    def __init__(self, parent):
+        self.parent = parent
 
+    def update_service(self, zeroconf, type, name):
+        info = zeroconf.get_service_info(type, name)
+        self.parent.updateList.emit(socket.inet_ntoa(info.addresses[0]) + ":" + str(info.port))  
+
+    def remove_service(self, zeroconf, type, name):
+        print("Service %s removed" % (name,))
+        info = zeroconf.get_service_info(type, name)
+        print(socket.inet_ntoa(info.addresses[0]) + ":" + str(info.port))  
+
+    def add_service(self, zeroconf, type, name):
+        info = zeroconf.get_service_info(type, name)
+        self.parent.updateList.emit(socket.inet_ntoa(info.addresses[0]) + ":" + str(info.port))  
             
         
 
 class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
     updateProgress = QtCore.pyqtSignal(int)
+    updateList = QtCore.pyqtSignal(str)
     def __init__(self):
         super().__init__()
 
@@ -127,11 +159,29 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         logging.getLogger().setLevel(logging.INFO)
 
         self.updateProgress.connect(self.progressBar.setValue)
+        self.progressBar.setProperty("value", 0)   
+
+        self.comboBox = ComboBox(self.centralwidget)
+        self.comboBox.setGeometry(QtCore.QRect(120, 190, 320, 35))
+        font = QtGui.QFont()
+        font.setPointSize(18)
+        self.comboBox.setFont(font)
+        self.comboBox.setEditable(True)
+
+        self.updateList.connect(self.comboBox.addItem)
+        self.onListChange("")
+        self.comboBox.editTextChanged.connect(self.onListChange)
+
+        zeroconf = Zeroconf()
+        listener = MyListener(self)
+        browser = ServiceBrowser(zeroconf, "_zig_star_gw._tcp.local.", listener)
+        
+        self.pushButton_update.clicked.connect(self.updateSerialPorts)
+
 
         self.pathFW = ''
         self.msgs = 0
 
-        self.progressBar.setProperty("value", 0)   
 
 
         self.initMenu()
@@ -139,6 +189,61 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         #OUTPUT_LOGGER_STDOUT.emit_write.connect(self.print_cc_log)
         OUTPUT_LOGGER_STDERR.emit_write.connect(self.print_cc_log)
 
+    def onListChange(self, text):
+        mode, port = etc.checkDevicePort(text)
+        #print (mode, port)
+        if mode == "ip":
+            self.pushButton_rst_esp.setEnabled(True)
+            self.pushButton_rst_zigbee.setEnabled(True)
+            self.checkBox_bsl.setEnabled(True)
+            self.checkBox_bsl.setChecked(True)
+        else:
+            self.pushButton_rst_esp.setEnabled(False)
+            self.pushButton_rst_zigbee.setEnabled(False)
+            self.checkBox_bsl.setEnabled(False)
+            self.checkBox_bsl.setChecked(False)
+        if mode:
+            self.mode = mode
+            self.dev = port
+            if self.mode == "ip":
+                self.port = 'socket://' + self.dev
+            else:
+                self.port = self.dev
+            self.pushButton_nv_erase.setEnabled(True)
+            self.pushButton_nv_read.setEnabled(True)
+            self.pushButton_nv_write.setEnabled(True)
+        else:
+            self.pushButton_nv_erase.setEnabled(False)
+            self.pushButton_nv_read.setEnabled(False)
+            self.pushButton_nv_write.setEnabled(False)
+
+
+    def updateSerialPorts(self):
+
+        if sys.platform.startswith('win'):
+            ports = ['COM%s' % (i + 1) for i in range(256)]
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+            # this excludes your current terminal "/dev/tty"
+            ports = glob.glob('/dev/tty[A-Za-z]*')
+        elif sys.platform.startswith('darwin'):
+            ports = glob.glob('/dev/tty.*')
+        else:
+            raise EnvironmentError('Unsupported platform')
+
+        result = []
+        #result.append("----------")
+        for port in ports:
+            try:
+                if sys.platform.startswith('win'):
+                    s = serial.Serial(port)
+                    s.close()
+                #result.append(port)
+                self.comboBox.addItem(port)
+            except (OSError, serial.SerialException):
+                pass
+        return result
+
+        #self.comboBox.addItems(serial_ports())
 
 
     def print_cc_log(self, text, severity):
@@ -182,7 +287,6 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
     def on_finished_CC(self):
         self.pushButton_fw_run.setEnabled(True)
         self.checkBox_fw_erase.setEnabled(True)
-        print(self.file_name.text())
         if (self.file_name.text() != "select file"):
             self.checkBox_fw_verify.setEnabled(True)
             self.checkBox_fw_write.setEnabled(True)
@@ -238,7 +342,7 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         fileName, _ = QtWidgets.QFileDialog.getSaveFileName(self,"Save NVRAM backup","","NVRAM backup Files (*.json)", options=options)
         if fileName:
             self.file = fileName
-            self.port = 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text()
+            #self.port = 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text()
             self.action = 1
             self.zigpy_thread.start()  
 
@@ -247,12 +351,12 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         fileName, _ = QtWidgets.QFileDialog.getOpenFileName(self,"Open NVRAM backup", "","NVRAM backup Files (*.json)", options=options)
         if fileName:
             self.file = fileName
-            self.port = 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text()
+            #self.port = 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text()
             self.action = 2
             self.zigpy_thread.start() 
 
     def sendNVerase(self):
-        self.port = 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text()
+        #self.port = 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text()
         self.action = 0
         self.zigpy_thread.start()  
 
@@ -261,7 +365,13 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         etc.workWithFWbtn(self)
     
     def flashBtnClick(self):
-        self.sendCmdGW('enableBSL')
+        if self.checkBox_bsl.isChecked():
+            self.sendCmdGW('enableBSL')
+        else: 
+            QtCore.QTimer.singleShot(
+                100,
+                functools.partial(self.runBSL)
+            )
 
     def sendRestartZigbee(self):
         self.sendCmdGW('rstZigbee')
@@ -284,7 +394,7 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         }[cmd]
         self.progressBar.setProperty("value", 0) 
         self.statusBar().showMessage("Try to " + cmdName)
-        url = "http://" + self.lineEdit_ip.text() + "/" + url
+        url = "http://" + etc.getIP(self.dev) + "/" + url
         req = QtNetwork.QNetworkRequest(QtCore.QUrl(url))
         self.nam = QtNetwork.QNetworkAccessManager()
         self.nam.finished.connect(self.handleResponse)
@@ -315,13 +425,15 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
     def runBSL(self):
         self.conf = {
-            'port': 'socket://' + self.lineEdit_ip.text() + ':' + self.lineEdit_port.text(),
+            'port': self.port,
             'file': self.pathFW,
             'erase': self.checkBox_fw_erase.isChecked(),
             'write': self.checkBox_fw_write.isChecked(),
             'verify': self.checkBox_fw_verify.isChecked()
         }
         self.cc2538_bsl_thread.start()       
+
+
 
 def main():
     QtWidgets.QApplication.setStyle('Fusion')
