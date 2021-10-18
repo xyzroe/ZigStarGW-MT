@@ -26,7 +26,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,  
           [],
-          name='ZigStarGW-MT',
+          name='ZigStarGW-MT.app',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
@@ -37,9 +37,10 @@ exe = EXE(pyz,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
-          entitlements_file=None , icon='ui/images/zigstar_tr_gl.icns')
+          entitlements_file=None, 
+          icon='ui/images/zigstar_tr_gl.icns',
+          version='0.3.0')
 app = BUNDLE(exe,
              name='ZigStarGW-MT.app',
              icon='ui/images/zigstar_tr_gl.icns',
-             bundle_identifier=None,
-             version='0.3.0')
+             bundle_identifier=None)
