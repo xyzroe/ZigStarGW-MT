@@ -37,10 +37,13 @@ exe = EXE(pyz,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
-          entitlements_file=None, 
-          icon='ui/images/zigstar_tr_gl.icns')
+          entitlements_file=None)
+
 app = BUNDLE(exe,
              name='ZigStarGW-MT.app',
              icon='ui/images/zigstar_tr_gl.icns',
              bundle_identifier=None,
-             version='0.3.0')
+             info_plist={
+                         'CFBundleShortVersionString': '0.3.0',
+                         'NSHumanReadableCopyright': '© 2021, xyzroe, GNU GPL 3.0'
+                        })

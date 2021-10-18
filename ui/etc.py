@@ -31,7 +31,7 @@ class About(QtWidgets.QDialog, about.Ui_Dialog):
     def __init__(self, parent=None):
         super(About, self).__init__(parent)
         self.setupUi(self)
-        self.label_version.setText('v'+version.version)
+        self.label_version.setText(version.version)
 
         self.labelImagen1 = LabelClickable(self)
         self.labelImagen1.setGeometry(65, 230, 128, 35)
