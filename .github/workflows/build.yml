@@ -42,14 +42,14 @@ jobs:
             CMD_BUILD: > 
                 pyinstaller osx.spec &&
                 cd dist/ &&
-                zip -r9 ZigStarGW-MT.app ZigStarGW-MT.app/
+                zip -r9 ZigStarGW-MT.app.zip ZigStarGW-MT.app/
             OUT_FILE_NAME: ZigStarGW-MT.app.zip
             ASSET_MIME: application/zip
           - os: windows-latest
             TARGET: windows
             CMD_BUILD: > 
                 pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
-                zip -r9 ZigStarGW-MT.exe ZigStarGW-MT.exe
+                zip -r9 ZigStarGW-MT.exe.zip ZigStarGW-MT.exe
             OUT_FILE_NAME: ZigStarGW-MT.exe.zip
             ASSET_MIME: application/x-executable
     steps:
