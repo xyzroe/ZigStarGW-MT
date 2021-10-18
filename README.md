@@ -1,4 +1,6 @@
 # ZigStar GW Multi tool
+[![Build](https://github.com/xyzroe/ZigStarGW-MT/actions/workflows/build.yml/badge.svg)](https://github.com/xyzroe/ZigStarGW-MT/actions/workflows/build.yml)
+  
 is GUI wrapper designed for convenient service work with Zig Star LAN GW (now also supports sticks, regardless of the manufacturer) and packed into single executable file.  
 You can get started without installing Python and the required modules, and without using the terminal, - just download and open.
 
