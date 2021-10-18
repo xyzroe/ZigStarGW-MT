@@ -38,7 +38,7 @@ jobs:
         include:
           - os: macos-latest
             TARGET: macos
-            CMD_BUILD: pyinstaller osx.spec
+            CMD_BUILD: pyinstaller -F -w -n ZigStarGW-MT osx.spec
             OUT_FILE_NAME: ZigStarGW-MT.app
             ASSET_MIME: application/applefile
           - os: windows-latest
@@ -48,7 +48,7 @@ jobs:
             ASSET_MIME: application/x-executable
     steps:
     - uses: actions/checkout@v1
-      with:
+      with:git status
         submodules: true
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
