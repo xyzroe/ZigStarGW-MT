@@ -38,7 +38,9 @@ jobs:
         include:
           - os: macos-latest
             TARGET: macos
-            CMD_BUILD: pyinstaller osx.spec
+            CMD_BUILD: > 
+                pyinstaller osx.spec &&
+                cd dist/ 
             OUT_FILE_NAME: ZigStarGW-MT.app
             ASSET_MIME: application/applefile
           - os: windows-latest
