@@ -1,5 +1,5 @@
 .DS_Store
-commit
+commit*
 *.hex
 *.json
 etc

@@ -7,8 +7,8 @@ VSVersionInfo(
   ffi=FixedFileInfo(
     # filevers and prodvers should be always a tuple with four items: (1, 2, 3, 4)
     # Set not needed items to zero 0. Must always contain 4 elements.
-    filevers=(0,3,1,0),
-    prodvers=(0,3,1,0),
+    filevers=(0,3,2,0),
+    prodvers=(0,3,2,0),
     # Contains a bitmask that specifies the valid bits 'flags'r
     mask=0x3f,
     # Contains a bitmask that specifies the Boolean attributes of the file.
@@ -32,12 +32,12 @@ VSVersionInfo(
         u'040904B0',
         [StringStruct(u'CompanyName', u'xyzroe for ZigStar'),
         StringStruct(u'FileDescription', u'ZigStar GW Multi tool'),
-        StringStruct(u'FileVersion', u'0.3.1.0'),
+        StringStruct(u'FileVersion', u'0.3.2.0'),
         StringStruct(u'InternalName', u'ZigStar GW Multi tool'),
         StringStruct(u'LegalCopyright', u'© 2021, xyzroe, GNU GPL 3.0'),
         StringStruct(u'OriginalFilename', u'ZigStarGW-MT.exe'),
         StringStruct(u'ProductName', u'ZigStar GW Multi tool'),
-        StringStruct(u'ProductVersion', u'0.3.1.0')])
+        StringStruct(u'ProductVersion', u'0.3.2.0')])
       ]), 
     VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
   ]
