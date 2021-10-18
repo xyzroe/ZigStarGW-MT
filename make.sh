@@ -8,8 +8,15 @@ pyuic5  ./ui/main.ui -o ./ui/main.py
 echo 'ALL | main.py                 OK'
 pyuic5 ./ui/about.ui -o ./ui/about.py
 echo 'ALL | about.py                OK'
-pyrcc5 ./ui/resources.qrc -o ./resources_rc.py 
-echo 'ALL | resources.qrc           OK' 
+
+while true; do
+    read -p "Rebuild resources.qrc ? (y/n) " yn
+    case $yn in
+        [Yy]* ) pyrcc5 ./ui/resources.qrc -o ./resources_rc.py ; echo 'ALL | resources.qrc           OK' ; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 create-version-file ./ui/metadata.yml --outfile ./ui/file_version_info.txt --version $ver
 echo 'WIN | file_version_info.txt   OK'
