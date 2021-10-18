@@ -61,6 +61,9 @@ ver=$(echo $(cat "$file") | egrep -o '(\d+\.\d+\.\d+-?\w*)')
 echo 'Push script for ZigStar GW MT'
 prebuild
 
+git status
+spaser
+
 while true; do
     read -p "Make commit? (y/n) " yn
     case $yn in
