@@ -1,6 +1,7 @@
 name: Build
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
@@ -18,7 +19,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        release_name: ${{ github.ref }}
         draft: false
         prerelease: false
     - name: Output Release URL File
@@ -38,9 +39,12 @@ jobs:
         include:
           - os: macos-latest
             TARGET: macos
-            CMD_BUILD: pyinstaller -F -w -n ZigStarGW-MT osx.spec
-            OUT_FILE_NAME: ZigStarGW-MT.app
-            ASSET_MIME: application/applefile
+            CMD_BUILD: > 
+                pyinstaller osx.spec &&
+                cd dist/ &&
+                zip -r9 ZigStarGW-MT.app.zip ZigStarGW-MT.app/
+            OUT_FILE_NAME: ZigStarGW-MT.app.zip
+            ASSET_MIME: application/zip
           - os: windows-latest
             TARGET: windows
             CMD_BUILD: pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py

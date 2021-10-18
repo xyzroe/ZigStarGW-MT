@@ -37,7 +37,8 @@ exe = EXE(pyz,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
-          entitlements_file=None , icon='ui/images/zigstar_tr_gl.icns')
+          entitlements_file=None, 
+          icon='ui/images/zigstar_tr_gl.icns')
 app = BUNDLE(exe,
              name='ZigStarGW-MT.app',
              icon='ui/images/zigstar_tr_gl.icns',
