@@ -63,6 +63,14 @@ jobs:
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x86.exe.zip 
             OUT_FILE_NAME: ZigStarGW-MT-x86.exe.zip 
             ASSET_MIME: application/zip
+          - os: ubuntu-18.04
+            TARGET: ubuntu
+            CMD_BUILD: > 
+                pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
+                cd dist/ &&
+                zip -r9 ZigStarGW-MT.exec.zip ZigStarGW-MT
+            OUT_FILE_NAME: ZigStarGW-MT.exec.zip
+            ASSET_MIME: application/zip
     steps:
     - uses: actions/checkout@v1
       with:

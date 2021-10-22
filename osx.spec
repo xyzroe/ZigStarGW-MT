@@ -44,7 +44,7 @@ app = BUNDLE(exe,
              icon='ui/images/zigstar_tr_gl.icns',
              bundle_identifier=None,
              info_plist={
-                         'CFBundleShortVersionString': '0.3.3',
+                         'CFBundleShortVersionString': '0.3.4',
                          'CFBundleName': 'ZigStar GW Multi tool',
                          'NSHumanReadableCopyright': '© 2021, xyzroe, GNU GPL 3.0'
                         })

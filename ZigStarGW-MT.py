@@ -174,8 +174,9 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
         zeroconf = Zeroconf()
         listener = MyListener(self)
-        browser = ServiceBrowser(zeroconf, "_zig_star_gw._tcp.local.", listener)
-        
+        browser1 = ServiceBrowser(zeroconf, "_zig_star_gw._tcp.local.", listener)
+        browser2 = ServiceBrowser(zeroconf, "_zigstar_gw._tcp.local.", listener)
+
         self.pushButton_update.clicked.connect(self.updateSerialPorts)
 
 
