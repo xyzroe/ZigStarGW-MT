@@ -54,10 +54,9 @@ Also, if you are using a non ZigStar gateway, you need to uncheck the Auto-BSL c
 ### 2.B NVRAM Tools
 If you have any troubles with Zigbee network NVRAM tool may help you.
 
-
 - **Read** button saves *.json file on your disk with current NVRAM state of your Zigbee module for future restore.
 - **Write** button reads *.json file from your disk with saved NVRAM state and write it to your Zigbee module.
-- **Erase** button cleans your Zigbee module NVRAM for a fresh install
+- **Erase** button cleans your Zigbee module NVRAM for a fresh install.
 <div align="center"><img src="https://zig-star.com/images/radio-docs/multitool/multitool-3.png"></div>
 
 ### Based on
