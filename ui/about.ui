@@ -159,7 +159,7 @@
    <property name="text">
     <string>is a GUI wrapper for zigpy_znp and cc2538-bsl.py
 
-in single *.exe or  *.app file</string>
+in single executable file</string>
    </property>
    <property name="textFormat">
     <enum>Qt::PlainText</enum>

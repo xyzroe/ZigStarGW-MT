@@ -125,7 +125,8 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
         self.toolButton.clicked.connect(self.showOpenFW)
 
-        self.pushButton_fw_run.setEnabled(False)
+        #self.pushButton_fw_run.setEnabled(False)
+        self.pushButton_fw_run.setText("Read IEEE")
         self.pushButton_fw_run.clicked.connect(self.flashBtnClick)
 
         self.checkBox_fw_verify.setEnabled(False)
@@ -133,6 +134,10 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         self.checkBox_fw_erase.clicked.connect(self.clickChecks)
         self.checkBox_fw_verify.clicked.connect(self.clickChecks)
         self.checkBox_fw_write.clicked.connect(self.clickChecks)
+
+        self.checkBox_ieee_write.clicked.connect(self.clickChecks)
+        self.checkBox_ieee_write.setEnabled(False)
+        self.lineEdit_ieee.textEdited.connect(self.editIEEE)
 
         self.pushButton_rst_esp.clicked.connect(self.sendRestartESP)
         self.pushButton_rst_zigbee.clicked.connect(self.sendRestartZigbee)
@@ -231,7 +236,7 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         else:
             raise EnvironmentError('Unsupported platform')
 
-        result = []
+        #result = []
         #result.append("----------")
         for port in ports:
             try:
@@ -242,13 +247,15 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
                 self.comboBox.addItem(port)
             except (OSError, serial.SerialException):
                 pass
-        return result
+        #return result
 
         #self.comboBox.addItems(serial_ports())
 
 
     def print_cc_log(self, text, severity):
         msg = text.lstrip()
+        if 'Primary IEEE Address:' in msg: 
+            self.lineEdit_ieee.setText(msg[int(msg.find(':')+1):])
         if not '\n' in msg:
             if len(text) > 3:
                 self.statusBar().showMessage(msg)
@@ -283,6 +290,8 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         self.checkBox_fw_erase.setEnabled(False)
         self.checkBox_fw_verify.setEnabled(False)
         self.checkBox_fw_write.setEnabled(False)
+        self.checkBox_ieee_write.setEnabled(False)
+        self.lineEdit_ieee.setEnabled(False)
 
 
     def on_finished_CC(self):
@@ -292,6 +301,10 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
             self.checkBox_fw_verify.setEnabled(True)
             self.checkBox_fw_write.setEnabled(True)
         self.progressBar.setProperty("value", 100) 
+
+        self.lineEdit_ieee.setEnabled(True)
+        if (self.lineEdit_ieee.text() != ""):
+            self.checkBox_ieee_write.setEnabled(True)
 
     def Click(self, accion):
         webbrowser.open('https://zig-star.com')
@@ -362,6 +375,9 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         self.zigpy_thread.start()  
 
 
+    def editIEEE(self):
+        etc.workWithIEEEline(self)
+
     def clickChecks(self):
         etc.workWithFWbtn(self)
     
@@ -430,7 +446,9 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
             'file': self.pathFW,
             'erase': self.checkBox_fw_erase.isChecked(),
             'write': self.checkBox_fw_write.isChecked(),
-            'verify': self.checkBox_fw_verify.isChecked()
+            'verify': self.checkBox_fw_verify.isChecked(),
+            'ieee_write': self.checkBox_ieee_write.isChecked(),
+            'ieee': self.lineEdit_ieee.text()
         }
         self.cc2538_bsl_thread.start()       
 

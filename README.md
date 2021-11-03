@@ -43,7 +43,10 @@ Click the update button to identify the USB drive and select your device from th
 ### 2.A Firmware update
 - Choose firmware *.hex file on your disk.
 - Choose required options. Usually is Erase, Write and Verify.
+- If you need to change the IEEE address, type it in and set checkbox Write IEEE.
 - Press the "Start" button to begin the selected processes.
+
+If any action is performed on the right side of the Multi Tool, the primary IEEE address is placed in the corresponding field. (Replacing manual entered or previously read one)
 
 *For gateways or USB sticks other than ZigStar, you may need to manually enable BSL.  
 Also, if you are using a non ZigStar gateway, you need to uncheck the Auto-BSL checkbox.*

@@ -144,7 +144,7 @@ class Ui_Dialog(object):
         self.label_thanks.setText(_translate("Dialog", "to say thanks"))
         self.label_info.setText(_translate("Dialog", "is a GUI wrapper for zigpy_znp and cc2538-bsl.py\n"
 "\n"
-"in single *.exe or  *.app file"))
+"in single executable file"))
         self.label_title.setText(_translate("Dialog", "ZigStar GW Multi tool"))
         self.label.setText(_translate("Dialog", "<html><head/><body><p>Made with <span style=\" font-size:18pt; font-weight:600; color:#fc0107;\">❤️</span> to Zigbee by xyzroe</p></body></html>"))
         self.label_date_2.setText(_translate("Dialog", "GNU General Public License v3.0"))

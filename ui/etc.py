@@ -1,5 +1,6 @@
 import sys
 import traceback
+import struct
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QPixmap
@@ -88,14 +89,37 @@ def checkDevicePort(port):
 def getIP(string):
         return string.split(':')[-2]
 
+def workWithIEEEline(self):
+    if (len(self.lineEdit_ieee.text()) == 23):
+        self.checkBox_ieee_write.setEnabled(True)
+    else:
+        self.checkBox_ieee_write.setChecked(False)
+        self.checkBox_ieee_write.setEnabled(False)
+        #self.pushButton_fw_run.setEnabled(True)
 
 
 def workWithFWbtn(self):
-    if (self.checkBox_fw_erase.isChecked() and not self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked()):
-        self.pushButton_fw_run.setText("Start")
-        #self.pushButton_fw_run.setText("Erase")
+    if (self.checkBox_fw_erase.isChecked() and not self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked() and not self.checkBox_ieee_write.isChecked()):
+        self.pushButton_fw_run.setText("Erase")
         self.pushButton_fw_run.setEnabled(True)
-    elif (self.checkBox_fw_erase.isChecked() and self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked()):
+    elif (not self.checkBox_fw_erase.isChecked() and self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked() and not self.checkBox_ieee_write.isChecked()):
+        self.pushButton_fw_run.setText("Write")
+        self.pushButton_fw_run.setEnabled(True)
+    elif (not self.checkBox_fw_erase.isChecked() and not self.checkBox_fw_write.isChecked() and self.checkBox_fw_verify.isChecked() and not self.checkBox_ieee_write.isChecked()):
+        self.pushButton_fw_run.setText("Verify")
+        self.pushButton_fw_run.setEnabled(True)
+    elif (not self.checkBox_fw_erase.isChecked() and not self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked() and self.checkBox_ieee_write.isChecked()):
+        self.pushButton_fw_run.setText("Write IEEE")
+        self.pushButton_fw_run.setEnabled(True)
+    elif (not self.checkBox_fw_erase.isChecked() and not self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked() and not self.checkBox_ieee_write.isChecked()):
+        self.pushButton_fw_run.setText("Read IEEE")
+        self.pushButton_fw_run.setEnabled(True)
+    else:
+        self.pushButton_fw_run.setText("Start")
+        self.pushButton_fw_run.setEnabled(True)
+
+    '''
+        elif (self.checkBox_fw_erase.isChecked() and self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked()):
         self.pushButton_fw_run.setText("Start")
         #self.pushButton_fw_run.setText("Erase and write")
         self.pushButton_fw_run.setEnabled(True)
@@ -107,18 +131,7 @@ def workWithFWbtn(self):
         self.pushButton_fw_run.setText("Start")
         #self.pushButton_fw_run.setText("Erase, write, verify")
         self.pushButton_fw_run.setEnabled(True)
-    elif (not self.checkBox_fw_erase.isChecked() and self.checkBox_fw_write.isChecked() and not self.checkBox_fw_verify.isChecked()):
-        self.pushButton_fw_run.setText("Start")
-        #self.pushButton_fw_run.setText("Write")
-        self.pushButton_fw_run.setEnabled(True)
-    elif (not self.checkBox_fw_erase.isChecked() and not self.checkBox_fw_write.isChecked() and self.checkBox_fw_verify.isChecked()):
-        self.pushButton_fw_run.setText("Start")
-        #self.pushButton_fw_run.setText("Verify")
-        self.pushButton_fw_run.setEnabled(True)
-    else:
-        self.pushButton_fw_run.setText("Select one")
-        self.pushButton_fw_run.setEnabled(False)
-
+    '''
 
 
 
@@ -170,7 +183,6 @@ async def workCC(self):
 
             defs['address'] = device.flash_start_addr
 
-
             if defs['force_speed'] != 1 and device.has_cmd_set_xosc:
                 if cmd.cmdSetXOsc():  
                     cmd.close()
@@ -208,10 +220,33 @@ async def workCC(self):
 
                 if crc_local == crc_target:
                     cc2538_bsl.mdebug(5, "Verified (match: 0x%08x)" % crc_local)
+                    #cmd.cmdReset()
                 else:
-                    cmd.cmdReset()
+                    #cmd.cmdReset()
                     raise Exception("NO CRC32 match: Local = 0x%x, "
                                     "Target = 0x%x" % (crc_local, crc_target))
+
+            if self.parent.conf['ieee_write']:
+                ieee_addr = cc2538_bsl.parse_ieee_address(self.parent.conf['ieee'])
+                cc2538_bsl.mdebug(5, "Setting IEEE address to %s"
+                        % (':'.join(['%02x' % b
+                                        for b in struct.pack('>Q', ieee_addr)])))
+                ieee_addr_bytes = struct.pack('<Q', ieee_addr)
+
+                if cmd.writeMemory(device.addr_ieee_address_secondary,
+                                ieee_addr_bytes):
+                    cc2538_bsl.mdebug(5, "    "
+                            "Set address done                                ")
+                else:
+                    raise Exception("Set address failed                       ")
+
+
+            if not self.parent.conf['erase'] and not self.parent.conf['write'] and not self.parent.conf['verify'] and not self.parent.conf['ieee_write']:
+                cc2538_bsl.mdebug(5, "Read address done")
+            
+            cmd.cmdReset()
+            cc2538_bsl.mdebug(5, "All is OK. Restarting Zigbee...")
+
         except Exception:
             e = sys.exc_info()[1] 
             if (e.args):
