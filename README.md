@@ -62,11 +62,16 @@ If you have any troubles with Zigbee network NVRAM tool may help you.
 - **Erase** button cleans your Zigbee module NVRAM for a fresh install.
 <div align="center"><img src="https://zig-star.com/images/radio-docs/multitool/multitool-3.png"></div>
 
+### Like ♥️?
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/xyzroe)
+
+
 ### Based on
 [zigpy/zigpy-znp](https://github.com/zigpy/zigpy-znp)  
 [JelmerT/cc2538-bsl](https://github.com/JelmerT/cc2538-bsl)  
 
   
+
 <br>  
 
 xyzroe/ZigStarGW-MT is licensed under the  
