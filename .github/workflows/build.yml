@@ -45,7 +45,7 @@ jobs:
                 zip -r9 ZigStarGW-MT.app.zip ZigStarGW-MT.app/
             OUT_FILE_NAME: ZigStarGW-MT.app.zip
             ASSET_MIME: application/zip
-          - os: windows-latest
+          - os: windows-2019
             TARGET: windows64
             arch: x64
             CMD_BUILD: > 
@@ -54,7 +54,7 @@ jobs:
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x64.exe.zip 
             OUT_FILE_NAME: ZigStarGW-MT-x64.exe.zip 
             ASSET_MIME: application/zip
-          - os: windows-latest
+          - os: windows-2019
             TARGET: windows32
             arch: x86
             CMD_BUILD: > 
@@ -63,7 +63,7 @@ jobs:
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x86.exe.zip 
             OUT_FILE_NAME: ZigStarGW-MT-x86.exe.zip 
             ASSET_MIME: application/zip
-          - os: ubuntu-18.04
+          - os: ubuntu-latest
             TARGET: ubuntu
             CMD_BUILD: > 
                 pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
