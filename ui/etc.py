@@ -183,21 +183,6 @@ async def workCC(self):
 
             defs['address'] = device.flash_start_addr
 
-            if defs['force_speed'] != 1 and device.has_cmd_set_xosc:
-                if cmd.cmdSetXOsc():  
-                    cmd.close()
-                    defs['baud'] = 1000000
-                    cmd.open(self.parent.conf['port'], defs['baud'])
-                    cc2538_bsl.mdebug(6, "Opening port %(port)s, baud %(baud)d"
-                            % {'port': self.parent.conf['port'], 'baud': defs['baud']})
-                    cc2538_bsl.mdebug(6, "Reconnecting to target at higher speed...")
-                    if (cmd.sendSynch() != 1):
-                        cc2538_bsl.mdebug(3, "Can't connect to target after clock "
-                                            "source switch. (Check external "
-                                            "crystal)")
-                else:
-                    cc2538_bsl.mdebug(3, "Can't switch target to external clock "
-                                        "source. (Try forcing speed)")
 
             if self.parent.conf['erase']:
                 cc2538_bsl.mdebug(5, "Performing mass erase")

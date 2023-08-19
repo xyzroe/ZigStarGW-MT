@@ -226,14 +226,16 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
 
     def updateSerialPorts(self):
-
+        ports = []
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
-        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-            # this excludes your current terminal "/dev/tty"
-            ports = glob.glob('/dev/tty[A-Za-z]*')
-        elif sys.platform.startswith('darwin'):
-            ports = glob.glob('/dev/tty.*')
+        elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin') or sys.platform.startswith('darwin'):
+            for name in ['ttyA', 'ttyS',
+                         'tty.usbserial',
+                         'ttyUSB',
+                         'tty.usbmodem',
+                         'tty.SLAB_USBtoUART']:
+                ports.extend(glob.glob('/dev/%s*' % name))
         else:
             raise EnvironmentError('Unsupported platform')
 
