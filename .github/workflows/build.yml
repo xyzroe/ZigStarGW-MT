@@ -49,7 +49,7 @@ jobs:
             TARGET: windows64
             arch: x64
             CMD_BUILD: > 
-                COPY cc2538-bsl\cc2538-bsl.py cc2538_bsl.py /Y
+                COPY cc2538-bsl\cc2538-bsl.py cc2538_bsl.py /Y &&
                 pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
                 cd dist/ &&
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x64.exe.zip 
@@ -59,7 +59,7 @@ jobs:
             TARGET: windows32
             arch: x86
             CMD_BUILD: > 
-                COPY cc2538-bsl\cc2538-bsl.py cc2538_bsl.py /Y
+                COPY cc2538-bsl\cc2538-bsl.py cc2538_bsl.py /Y &&
                 pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
                 cd dist/ &&
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x86.exe.zip 
