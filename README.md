@@ -1,5 +1,9 @@
 # ZigStar GW Multi tool
 [![Build](https://github.com/xyzroe/ZigStarGW-MT/actions/workflows/build.yml/badge.svg)](https://github.com/xyzroe/ZigStarGW-MT/actions/workflows/build.yml)
+[![GitHub version](https://img.shields.io/github/release/xyzroe/ZigStarGW-MT.svg)](https://github.com/xyzroe/ZigStarGW-MT/releases)
+[![GitHub download](https://img.shields.io/github/downloads/xyzroe/ZigStarGW-MT/total.svg)](https://github.com/xyzroe/ZigStarGW-MT/latest)
+[![License](https://img.shields.io/github/license/xyzroe/ZigStarGW-MT.svg)](LICENSE.txt)
+
   
 is GUI wrapper firtsly designed for convenient service work with  [Zig Star LAN GW](https://github.com/mercenaruss/zigstar_gateways),   
 but now supports any TI CC1352/CC2538/CC2652 based Zigbee sticks or gateways, regardless of the manufacturer. 
