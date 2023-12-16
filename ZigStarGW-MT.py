@@ -82,7 +82,7 @@ class znpLogger(logging.Handler):
                 MagicNumber = 100/587
             else:
                 MagicNumber = 100/581
-            self.parent.updateProgress.emit(self.parent.msgs * MagicNumber)  
+            self.parent.updateProgress.emit(int(self.parent.msgs * MagicNumber))
 
 
 
@@ -122,6 +122,17 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
         self.labelLogo.setPixmap(self.pixmapImagen)
 
         self.labelLogo.clicked.connect(self.Click)
+
+
+        self.labelImagen1 = etc.LabelClickable(self)
+        self.labelImagen1.setGeometry(270, 495, 128, 35)
+        self.labelImagen1.setToolTip("Buy me a coffee")
+        self.labelImagen1.setCursor(QtCore.Qt.PointingHandCursor)                  
+        self.pixmapImagen1 = QPixmap(':/ui/images/coffee.png').scaled(128, 35, QtCore.Qt.KeepAspectRatio,
+                                     QtCore.Qt.SmoothTransformation)
+        self.labelImagen1.setPixmap(self.pixmapImagen1)
+
+        self.labelImagen1.clicked.connect(self.Clic1)
 
         self.toolButton.clicked.connect(self.showOpenFW)
 
@@ -264,7 +275,7 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
                 self.statusBar().showMessage(msg)
         self.msgs += 1
         MagicNumber  = 0.069
-        self.updateProgress.emit(self.msgs * MagicNumber)  
+        self.updateProgress.emit(int(self.msgs * MagicNumber))  
 
     def on_change_ZNP(self, s):
         self.statusBar().showMessage(s)
@@ -311,6 +322,9 @@ class MainWindow(QtWidgets.QMainWindow, main.Ui_MainWindow):
 
     def Click(self, accion):
         webbrowser.open('https://zig-star.com')
+
+    def Clic1(self, accion):
+        webbrowser.open('https://www.buymeacoffee.com/xyzroe')
 
     def about_window(self):
         widget = etc.About()
