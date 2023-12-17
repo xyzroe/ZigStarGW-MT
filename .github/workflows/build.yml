@@ -49,8 +49,8 @@ jobs:
             TARGET: windows64
             arch: x64
             CMD_BUILD: > 
-                powershell Remove-Item -Path "cc2538_bsl.py" &&
-                powershell Copy-Item -Path "cc2538-bsl/cc2538-bsl.py" -Destination "cc2538_bsl.py" -Force &&
+                # powershell Remove-Item -Path "cc2538_bsl.py" &&
+                # powershell Copy-Item -Path "cc2538-bsl/cc2538-bsl.py" -Destination "cc2538_bsl.py" -Force &&
                 pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
                 cd dist/ &&
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x64.exe.zip 
@@ -60,8 +60,8 @@ jobs:
             TARGET: windows32
             arch: x86
             CMD_BUILD: > 
-                powershell Remove-Item -Path "cc2538_bsl.py" &&
-                powershell Copy-Item -Path "cc2538-bsl/cc2538-bsl.py" -Destination "cc2538_bsl.py" -Force &&
+                # powershell Remove-Item -Path "cc2538_bsl.py" &&
+                # powershell Copy-Item -Path "cc2538-bsl/cc2538-bsl.py" -Destination "cc2538_bsl.py" -Force &&
                 pyinstaller -F -w -n ZigStarGW-MT -i ui/images/zigstar_tr_gl.ico --version-file ui/file_version_info.txt ZigStarGW-MT.py &&
                 cd dist/ &&
                 powershell Compress-Archive ZigStarGW-MT.exe ZigStarGW-MT-x86.exe.zip 
