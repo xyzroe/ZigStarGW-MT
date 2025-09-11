@@ -4,8 +4,15 @@
 [![GitHub download](https://img.shields.io/github/downloads/xyzroe/ZigStarGW-MT/total.svg)](https://github.com/xyzroe/ZigStarGW-MT/latest)
 [![License](https://img.shields.io/github/license/xyzroe/ZigStarGW-MT.svg)](LICENSE.txt)
 
+
+> ⚠️ **ARCHIVED / UNMAINTAINED**
+>
+> This project is now archived.
+> Unfortunately, there have been no updates or support provided.  
+> I respectfully request your consideration of a new web-based solution: [XZG Multi-tool](https://github.com/xyzroe/XZG-MT).
+
   
-is GUI wrapper firtsly designed for convenient service work with  [Zig Star LAN GW](https://github.com/mercenaruss/zigstar_gateways),   
+is GUI wrapper firtsly designed for convenient service work with  Zig Star LAN GW  
 but now supports any TI CC1352/CC2538/CC2652 based Zigbee sticks or gateways, regardless of the manufacturer. 
 
 Multi tool is packed into single executable file.  
