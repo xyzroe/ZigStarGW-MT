@@ -7,9 +7,9 @@
 
 > ⚠️ **ARCHIVED / UNMAINTAINED**
 >
-> This project is now archived.
-> Unfortunately, there have been no updates or support provided.  
-> I respectfully request your consideration of a new web-based solution: [XZG Multi-tool](https://github.com/xyzroe/XZG-MT).
+> This project is now archived and will not receive further updates.
+> 
+> I kindly invite you to try the new web-based tool [XZG Multi-Tool](https://github.com/xyzroe/XZG-MT), which offers improved functionality and ongoing support. 🚀
 
   
 is GUI wrapper firtsly designed for convenient service work with  Zig Star LAN GW  
